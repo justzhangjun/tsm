@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\SkillType */
 
-$this->title = 'Create Skill Type';
-$this->params['breadcrumbs'][] = ['label' => 'Skill Types', 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Skill Type');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Skill Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="skill-type-create">

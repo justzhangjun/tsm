@@ -10,11 +10,15 @@ use Yii;
  * @property integer $ID
  * @property string $Skill_Type_Name
  * @property string $Description
- * @property string $Status
+ * @property integer $Status
  * @property string $Create_Date
- * @property string $Created_By
+ * @property integer $Created_By
  * @property string $Update_Date
- * @property string $Updated_By
+ * @property integer $Updated_By
+ *
+ * @property EmployeeSkill[] $employeeSkills
+ * @property Skill[] $skills
+ * @property Lookups $status
  */
 class SkillType extends \yii\db\ActiveRecord
 {
@@ -33,10 +37,11 @@ class SkillType extends \yii\db\ActiveRecord
     {
         return [
             [['Skill_Type_Name', 'Description'], 'required'],
+            [['Status', 'Created_By', 'Updated_By'], 'integer'],
             [['Create_Date', 'Update_Date'], 'safe'],
-            [['Skill_Type_Name', 'Created_By', 'Updated_By'], 'string', 'max' => 50],
+            [['Skill_Type_Name'], 'string', 'max' => 50],
             [['Description'], 'string', 'max' => 500],
-            [['Status'], 'string', 'max' => 10],
+            [['Status'], 'exist', 'skipOnError' => true, 'targetClass' => Lookups::className(), 'targetAttribute' => ['Status' => 'ID']],
         ];
     }
 
@@ -55,5 +60,29 @@ class SkillType extends \yii\db\ActiveRecord
             'Update_Date' => 'Update  Date',
             'Updated_By' => 'Updated  By',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmployeeSkills()
+    {
+        return $this->hasMany(EmployeeSkill::className(), ['Skill_Type_ID' => 'ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSkills()
+    {
+        return $this->hasMany(Skill::className(), ['Skill_Type_ID' => 'ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatus()
+    {
+        return $this->hasOne(Lookups::className(), ['ID' => 'Status']);
     }
 }

@@ -5,10 +5,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\SkillType */
 
-$this->title = 'Update Skill Type: ' . $model->ID;
-$this->params['breadcrumbs'][] = ['label' => 'Skill Types', 'url' => ['index']];
+$this->title = Yii::t('app', 'Update {modelClass}: ', [
+    'modelClass' => 'Skill Type',
+]) . $model->ID;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Skill Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->ID, 'url' => ['view', 'id' => $model->ID]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="skill-type-update">
 

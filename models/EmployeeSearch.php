@@ -18,8 +18,8 @@ class EmployeeSearch extends Employee
     public function rules()
     {
         return [
-            [['ID', 'User_ID', 'Employee_Type', 'Total_Experience'], 'integer'],
-            [['Employee_Name', 'Title', 'Department', 'Last_Company', 'Status', 'Create_Date', 'Created_By', 'Update_Date', 'Updated_By'], 'safe'],
+            [['ID', 'User_ID', 'Employee_Type', 'Total_Experience', 'Status', 'Created_By', 'Updated_By'], 'integer'],
+            [['Employee_Name', 'Title', 'Department', 'Last_Company', 'Create_Date', 'Update_Date'], 'safe'],
         ];
     }
 
@@ -63,17 +63,17 @@ class EmployeeSearch extends Employee
             'User_ID' => $this->User_ID,
             'Employee_Type' => $this->Employee_Type,
             'Total_Experience' => $this->Total_Experience,
+            'Status' => $this->Status,
             'Create_Date' => $this->Create_Date,
+            'Created_By' => $this->Created_By,
             'Update_Date' => $this->Update_Date,
+            'Updated_By' => $this->Updated_By,
         ]);
 
         $query->andFilterWhere(['like', 'Employee_Name', $this->Employee_Name])
             ->andFilterWhere(['like', 'Title', $this->Title])
             ->andFilterWhere(['like', 'Department', $this->Department])
-            ->andFilterWhere(['like', 'Last_Company', $this->Last_Company])
-            ->andFilterWhere(['like', 'Status', $this->Status])
-            ->andFilterWhere(['like', 'Created_By', $this->Created_By])
-            ->andFilterWhere(['like', 'Updated_By', $this->Updated_By]);
+            ->andFilterWhere(['like', 'Last_Company', $this->Last_Company]);
 
         return $dataProvider;
     }

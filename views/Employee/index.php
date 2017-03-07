@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\EmployeeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Employees';
+$this->title = Yii::t('app', 'Employees');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="employee-index">
@@ -16,28 +16,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Employee', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Employee'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'ID',
             'User_ID',
             'Employee_Name',
             'Employee_Type',
             'Title',
-            // 'Department',
-            // 'Total_Experience',
-            // 'Last_Company',
-            // 'Status',
-            // 'Create_Date',
-            // 'Created_By',
-            // 'Update_Date',
-            // 'Updated_By',
-
+            'Department',
+            'Total_Experience',
+            'Last_Company',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

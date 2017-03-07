@@ -18,8 +18,8 @@ class SkillTypeSearch extends SkillType
     public function rules()
     {
         return [
-            [['ID'], 'integer'],
-            [['Skill_Type_Name', 'Description', 'Status', 'Create_Date', 'Created_By', 'Update_Date', 'Updated_By'], 'safe'],
+            [['ID', 'Status', 'Created_By', 'Updated_By'], 'integer'],
+            [['Skill_Type_Name', 'Description', 'Create_Date', 'Update_Date'], 'safe'],
         ];
     }
 
@@ -60,15 +60,15 @@ class SkillTypeSearch extends SkillType
         // grid filtering conditions
         $query->andFilterWhere([
             'ID' => $this->ID,
+            'Status' => $this->Status,
             'Create_Date' => $this->Create_Date,
+            'Created_By' => $this->Created_By,
             'Update_Date' => $this->Update_Date,
+            'Updated_By' => $this->Updated_By,
         ]);
 
         $query->andFilterWhere(['like', 'Skill_Type_Name', $this->Skill_Type_Name])
-            ->andFilterWhere(['like', 'Description', $this->Description])
-            ->andFilterWhere(['like', 'Status', $this->Status])
-            ->andFilterWhere(['like', 'Created_By', $this->Created_By])
-            ->andFilterWhere(['like', 'Updated_By', $this->Updated_By]);
+            ->andFilterWhere(['like', 'Description', $this->Description]);
 
         return $dataProvider;
     }

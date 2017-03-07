@@ -13,10 +13,17 @@ use Yii;
  * @property integer $Skill_ID
  * @property integer $Experience
  * @property integer $Level
- * @property string $Status
+ * @property integer $Status
  * @property string $Create_Date
- * @property string $Created_By
+ * @property integer $Created_By
  * @property string $Update_Date
+ * @property integer $Updated_By
+ *
+ * @property Employee $employee
+ * @property Lookups $level
+ * @property SkillType $skillType
+ * @property Skill $skill
+ * @property Lookups $status
  */
 class EmployeeSkill extends \yii\db\ActiveRecord
 {
@@ -35,10 +42,13 @@ class EmployeeSkill extends \yii\db\ActiveRecord
     {
         return [
             [['Employee_ID', 'Skill_Type_ID', 'Skill_ID', 'Experience', 'Level'], 'required'],
-            [['Employee_ID', 'Skill_Type_ID', 'Skill_ID', 'Experience', 'Level'], 'integer'],
+            [['Employee_ID', 'Skill_Type_ID', 'Skill_ID', 'Experience', 'Level', 'Status', 'Created_By', 'Updated_By'], 'integer'],
             [['Create_Date', 'Update_Date'], 'safe'],
-            [['Status'], 'string', 'max' => 10],
-            [['Created_By'], 'string', 'max' => 50],
+            [['Employee_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Employee::className(), 'targetAttribute' => ['Employee_ID' => 'ID']],
+            [['Level'], 'exist', 'skipOnError' => true, 'targetClass' => Lookups::className(), 'targetAttribute' => ['Level' => 'ID']],
+            [['Skill_Type_ID'], 'exist', 'skipOnError' => true, 'targetClass' => SkillType::className(), 'targetAttribute' => ['Skill_Type_ID' => 'ID']],
+            [['Skill_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Skill::className(), 'targetAttribute' => ['Skill_ID' => 'ID']],
+            [['Status'], 'exist', 'skipOnError' => true, 'targetClass' => Lookups::className(), 'targetAttribute' => ['Status' => 'ID']],
         ];
     }
 
@@ -58,6 +68,47 @@ class EmployeeSkill extends \yii\db\ActiveRecord
             'Create_Date' => 'Create  Date',
             'Created_By' => 'Created  By',
             'Update_Date' => 'Update  Date',
+            'Updated_By' => 'Updated  By',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmployee()
+    {
+        return $this->hasOne(Employee::className(), ['ID' => 'Employee_ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLevel()
+    {
+        return $this->hasOne(Lookups::className(), ['ID' => 'Level']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSkillType()
+    {
+        return $this->hasOne(SkillType::className(), ['ID' => 'Skill_Type_ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSkill()
+    {
+        return $this->hasOne(Skill::className(), ['ID' => 'Skill_ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatus()
+    {
+        return $this->hasOne(Lookups::className(), ['ID' => 'Status']);
     }
 }

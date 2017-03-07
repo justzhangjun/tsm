@@ -18,8 +18,8 @@ class SkillSearch extends Skill
     public function rules()
     {
         return [
-            [['ID', 'Skill_Type_ID'], 'integer'],
-            [['Skill_Name', 'Description', 'Status', 'Create_Date', 'Created_By', 'Update_Date', 'Updated_By'], 'safe'],
+            [['ID', 'Skill_Type_ID', 'Status', 'Created_By', 'Updated_By'], 'integer'],
+            [['Skill_Name', 'Description', 'Create_Date', 'Update_Date'], 'safe'],
         ];
     }
 
@@ -61,15 +61,15 @@ class SkillSearch extends Skill
         $query->andFilterWhere([
             'ID' => $this->ID,
             'Skill_Type_ID' => $this->Skill_Type_ID,
+            'Status' => $this->Status,
             'Create_Date' => $this->Create_Date,
+            'Created_By' => $this->Created_By,
             'Update_Date' => $this->Update_Date,
+            'Updated_By' => $this->Updated_By,
         ]);
 
         $query->andFilterWhere(['like', 'Skill_Name', $this->Skill_Name])
-            ->andFilterWhere(['like', 'Description', $this->Description])
-            ->andFilterWhere(['like', 'Status', $this->Status])
-            ->andFilterWhere(['like', 'Created_By', $this->Created_By])
-            ->andFilterWhere(['like', 'Updated_By', $this->Updated_By]);
+            ->andFilterWhere(['like', 'Description', $this->Description]);
 
         return $dataProvider;
     }

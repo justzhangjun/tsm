@@ -13,11 +13,14 @@ use Yii;
  * @property string $Password
  * @property string $Contact
  * @property integer $Recommend_User
- * @property string $Status
+ * @property integer $Status
  * @property string $Create_Date
- * @property string $Created_By
+ * @property integer $Created_By
  * @property string $Update_Date
- * @property string $Updated_By
+ * @property integer $Updated_By
+ *
+ * @property Employee[] $employees
+ * @property Lookups $status
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -39,11 +42,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['Display_Name', 'User_Name', 'Password', 'Contact', 'Recommend_User'], 'required'],
-            [['Recommend_User'], 'integer'],
+            [['Recommend_User', 'Status', 'Created_By', 'Updated_By'], 'integer'],
             [['Create_Date', 'Update_Date'], 'safe'],
-            [['Display_Name', 'User_Name', 'Password', 'Created_By', 'Updated_By'], 'string', 'max' => 50],
+            [['Display_Name', 'User_Name', 'Password'], 'string', 'max' => 50],
             [['Contact'], 'string', 'max' => 100],
-            [['Status'], 'string', 'max' => 10],
+            [['Status'], 'exist', 'skipOnError' => true, 'targetClass' => Lookups::className(), 'targetAttribute' => ['Status' => 'ID']],
         ];
     }
 
@@ -66,7 +69,24 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'Updated_By' => 'Updated  By',
         ];
     }
-        /**
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmployees()
+    {
+        return $this->hasMany(Employee::className(), ['User_ID' => 'ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatus()
+    {
+        return $this->hasOne(Lookups::className(), ['ID' => 'Status']);
+    }
+    
+    /**
      * @inheritdoc
      */
     public static function findIdentity($id)

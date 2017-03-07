@@ -12,14 +12,16 @@ use app\models\EmployeeSkill;
  */
 class EmployeeSkillSearch extends EmployeeSkill
 {
+    public $skill_type_name;
+    
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['ID', 'Employee_ID', 'Skill_Type_ID', 'Skill_ID', 'Experience', 'Level'], 'integer'],
-            [['Status', 'Create_Date', 'Created_By', 'Update_Date'], 'safe'],
+            [['ID', 'Employee_ID', 'Skill_Type_ID', 'Skill_ID', 'Experience', 'Level', 'Status', 'Created_By', 'Updated_By'], 'integer'],
+            [['skill_type_name','Create_Date', 'Update_Date'], 'safe'],
         ];
     }
 
@@ -42,11 +44,22 @@ class EmployeeSkillSearch extends EmployeeSkill
     public function search($params)
     {
         $query = EmployeeSkill::find();
+        $query->joinWith(['skillType']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+        ]);
+        
+        $dataProvider->setSort([
+            'attributes'=>[
+                'skill_type_name'=>[
+                    'asc'=>['skill_type.Skill_Type_Name'=>SORT_ASC],
+                    'desc'=>['skill_type.Skill_Type_Name'=>SORT_DESC],
+                    'label'=>'skill_type.Skill_Type_Name'
+                ],
+            ]
         ]);
 
         $this->load($params);
@@ -58,19 +71,21 @@ class EmployeeSkillSearch extends EmployeeSkill
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
+        /*$query->andFilterWhere([
             'ID' => $this->ID,
             'Employee_ID' => $this->Employee_ID,
             'Skill_Type_ID' => $this->Skill_Type_ID,
             'Skill_ID' => $this->Skill_ID,
             'Experience' => $this->Experience,
             'Level' => $this->Level,
+            'Status' => $this->Status,
             'Create_Date' => $this->Create_Date,
+            'Created_By' => $this->Created_By,
             'Update_Date' => $this->Update_Date,
-        ]);
-
-        $query->andFilterWhere(['like', 'Status', $this->Status])
-            ->andFilterWhere(['like', 'Created_By', $this->Created_By]);
+            'Updated_By' => $this->Updated_By,
+        ]);*/
+        
+        $query->andFilterWhere(['like', 'skill_type.Skill_Type_Name', $this->skill_type_name]);
 
         return $dataProvider;
     }
