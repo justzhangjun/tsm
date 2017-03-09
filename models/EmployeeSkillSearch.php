@@ -13,6 +13,9 @@ use app\models\EmployeeSkill;
 class EmployeeSkillSearch extends EmployeeSkill
 {
     public $skill_type_name;
+    public $employee_name;
+    public $skill_name;
+    public $level_name;
     
     /**
      * @inheritdoc
@@ -21,7 +24,7 @@ class EmployeeSkillSearch extends EmployeeSkill
     {
         return [
             [['ID', 'Employee_ID', 'Skill_Type_ID', 'Skill_ID', 'Experience', 'Level', 'Status', 'Created_By', 'Updated_By'], 'integer'],
-            [['skill_type_name','Create_Date', 'Update_Date'], 'safe'],
+            [['skill_type_name','employee_name','skill_name','level_name','Create_Date', 'Update_Date'], 'safe'],
         ];
     }
 
@@ -45,6 +48,9 @@ class EmployeeSkillSearch extends EmployeeSkill
     {
         $query = EmployeeSkill::find();
         $query->joinWith(['skillType']);
+        $query->joinWith(['skill']);
+        $query->joinWith(['employee']);
+        $query->joinWith(['level']);
 
         // add conditions that should always apply here
 
@@ -58,6 +64,21 @@ class EmployeeSkillSearch extends EmployeeSkill
                     'asc'=>['skill_type.Skill_Type_Name'=>SORT_ASC],
                     'desc'=>['skill_type.Skill_Type_Name'=>SORT_DESC],
                     'label'=>'skill_type.Skill_Type_Name'
+                ],
+                'employee_name'=>[
+                    'asc'=>['employee.Employee_Name'=>SORT_ASC],
+                    'desc'=>['employee.Employee_Name'=>SORT_DESC],
+                    'label'=>'employee.Employee_Name'
+                ],
+                'skill_name'=>[
+                    'asc'=>['skill.Skill_Name'=>SORT_ASC],
+                    'desc'=>['skill.Skill_Name'=>SORT_DESC],
+                    'label'=>'skill.Skill_Name'
+                ],
+                'level_name'=>[
+                    'asc'=>['level.Lookup_Value'=>SORT_ASC],
+                    'desc'=>['level.Lookup_Value'=>SORT_DESC],
+                    'label'=>'level.Lookup_Value'
                 ],
             ]
         ]);
@@ -86,6 +107,10 @@ class EmployeeSkillSearch extends EmployeeSkill
         ]);*/
         
         $query->andFilterWhere(['like', 'skill_type.Skill_Type_Name', $this->skill_type_name]);
+        $query->andFilterWhere(['like', 'employee.Employee_Name', $this->employee_name]);
+        $query->andFilterWhere(['like', 'skill.Skill_Name', $this->skill_name]);
+        $query->andFilterWhere(['like', 'lookups.Lookup_Value', $this->level_name]);
+        
 
         return $dataProvider;
     }

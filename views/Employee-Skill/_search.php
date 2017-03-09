@@ -15,17 +15,13 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'ID') ?>
-
-    <?= $form->field($model, 'Employee_ID') ?>
+    <?= $form->field($model, 'employee_name') ?>
 
     <?= $form->field($model, 'skill_type_name') ?>
 
-    <?= $form->field($model, 'Skill_ID') ?>
+    <?= $form->field($model, 'skill_name') ?>
 
-    <?= $form->field($model, 'Experience') ?>
-
-    <?= $form->field($model, 'Level') ?>
+    <?= $form->field($model, 'level_name') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

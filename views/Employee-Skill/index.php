@@ -23,12 +23,15 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'employee.Employee_Name',
+            //'employee.Employee_Name',
+            ['label'=>'Employee Name', 'attribute' => 'employee_name',  'value' => 'employee.Employee_Name' ],
             //'skillType.Skill_Type_Name',
             ['label'=>'Skill Type Name', 'attribute' => 'skill_type_name',  'value' => 'skillType.Skill_Type_Name' ],
-            'skill.Skill_Name',
+            ['label'=>'Skill Name', 'attribute' => 'skill_name',  'value' => 'skill.Skill_Name' ],
+            //'skill.Skill_Name',            
+            ['label'=>'Level Name', 'attribute' => 'level_name',  'value' => 'level.Lookup_Value' ],
             'Experience',
-            'level.Lookup_Value',
+            //'level.Lookup_Value',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
